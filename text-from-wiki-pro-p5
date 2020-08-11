@@ -1,0 +1,31 @@
+In order to explain and model our final design—a “2-input-3-output” logic circuit, we introduce the neural network algorithm and establish our own neural network which consists of an input layer, a hidden layer and an output layer.
+
+>> http://2014.igem.org/wiki/images/9/97/Fudan_model_model_presentation_prototypical.jpg
+
+Firstly, the input layer is composed of two units. The value of each unit can be chosen between 0 and 1, and when the value is chosen as 1, it presents that a specific input signal is added into our system. Accordingly, 0 presents that the specific input signal has not been introduced to our logic circuit. Here, our input signals are different kinds of small molecular which can regulate gene expression or the activation of its target proteins. And based our final design, we define Input-1 as tetracycline (Tet) and Input-2 as Tamoxifen(TM).
+
+Secondly, the hidden layer is comprised of seven units that are chosen and established dependent on their biological roles. It should be noted that there are only four functional elements (a pair of Cre-Loxp sites, a H1/T0 promoter and two tet-on promoters) regulated by our two input signals, so we have three “bias units” in the hidden layer, which represents two ribozymes and a constitutive promoter respectively. Therefore, we get a biological functions-dependant hidden layer and it help this model become vividly.
+
+In the last layer of our neural network, we have three units respectively representing three different kinds of output results which depend on different input signals. After comparing the value of each unit in the last layer with the threshold we choose (Here, we choose 0.5 as our threhold), we can obtain the anticipation result, and in our design, the results correspond to cell fate.
+
+>> http://2014.igem.org/wiki/images/7/7b/Fudan_model_model_presentation.jpg
+
+In addition, we also entrust biological significance to both weight matrixes. The parameter aijk (i represents the no. of the weight matrix; j represents the no. of the unit in the former layer; k represents the no. of the unit in the former layer) is defined as a measurement of the effect that the specific unit in the former layer has on the given unit in the latter layer. In detail, aijk can be 1, 0 or -1, and 1 presents that the effect was positive, 0 presents that there is no relationship between the two units and -1 shows that the unit in the former layer is a negative regulator of the specific unit in the latter layer. For example, Tamoxifen has no effect on promoters induced by tetracycline, so we set a124, a125, a126 as 0. The ribozyme-a in the hidden layer can lower the expression level of gene-A significantly. Therefore, a211 equals -1. a232 equals 1, because CMV is a constitutive promoter and promotes the expression of gene-B.
+
+We use parameter fijk (both the meanings and the value of i, j, k are the same as those in aijk) to represent the efficiency of the act between the specific pair of units (The efficiency has been normalized by a constitutive promoter. We will show below. ). For instance, we insert ribozyme-a into the 3’UTR of gene-A and the cleavage efficiency of ribozymes is about 70%. We set f211 as 0.7. If there is no relationship between two units set in the contiguous layers respectively, the corresponding fijk can be defined as 0. For the range of all of the parameters being in a small interval, there is no need to introduce a complicated function such as function sigmod which is often used in the field of machine learning to normalize the result and decrease the consumption of calculation to some extent therefore.
+
+>> http://2014.igem.org/wiki/images/0/06/Fudan_model_parameter.jpg
+
+We can get the anticipation result of our design by some simple formulations listed below:
+
+>> http://2014.igem.org/wiki/images/d/dd/Fudan_model_shenjingwangluogongshi.jpg
+
+For the simplicity and flexibility of our model, everyone can use our model to test their designs or anticipate the results before taking pains to build their logic circuits. Furthermore, people can also use our model to explaining their own logic circuits directly just by training the parameters by their own training sets.
+
+To conclude, we build a special neural network completely simulating and reflecting the true biological process of the logic circuit we establish. This design breaks the common configuration of the neural network and has low calculation consumption. In addition, our model is a good sample for modeling a such logic circuit or even a more complicated one, and we will continue developing this model to make it more accurate and more robust.
+
+Note:
+* The method to measure the efficiency of all the elements and our system
+* We measure the efficiency of each of our functional elements by testing the activity of the fluorescent reporter (We first constructed plasmids containing a reporter gene for each functional element to test each one’s efficiency and used different fluorescent reporters to substitute gene-A, gene-B and gene-C to test the efficiency of the all logic circuit. For more detail, you can check other parts of our wiki). To normalize the efficiency of all the elements in our system, we utilize relative expression units (REUs)【1】, and the activities are normalized by the intensity of a GFP whose expression is controlled by a constitutive promoter. In detail, for different promoters, direct comparison is enough. For ribozymes and siRNAs which execute the cleavage of mRNA, we just need to do some simple calculation to get the efficiency. For the recombinant enzyme Cre, although it’s function is more complicated than the other functional elements, few steps of calculation and analysis are sufficient. For the efficiency of induction, we can introduce a concentration gradient in the cell culture to find the best condition.
+* For example: http://2014.igem.org/wiki/images/7/77/Fudan_model_juzhengongshi.jpg
+* Reference: Moon, T. S. and C. Lou, et al. (2012). "Genetic programs constructed from layered logic gates in single cells." Nature 491 (7423): 249-53.
